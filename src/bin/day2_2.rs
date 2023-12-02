@@ -1,21 +1,17 @@
 use std::fs;
 
-pub fn solve() {
-    let max_red = 12;
-    let max_green = 13;
-    let max_blue = 14;
-
-    let mut sum_possible = 0;
-
+fn main() {
     let file = "inputs/2.txt";
-
     let contents = fs::read_to_string(file).expect("Cannot read file:");
 
-    for line in contents.lines() {
-        let mut possible = true;
+    let mut sum_powers = 0;
 
-        let (game, draws) = line.split_once(':').unwrap();
-        let game_id = game.split_once(' ').unwrap().1.parse::<i32>().unwrap();
+    for line in contents.lines() {
+        let mut max_red = 0;
+        let mut max_green = 0;
+        let mut max_blue = 0;
+
+        let draws = line.split_once(':').unwrap().1;
 
         for draw in draws.split(';') {
             for mut color in draw.split(',') {
@@ -27,18 +23,16 @@ pub fn solve() {
                         color = parts.1;
 
                         match color {
-                            "red" => { if n > max_red { possible = false; } }
-                            "green" => { if n > max_green { possible = false; } }
-                            "blue" => { if n > max_blue { possible = false; } }
+                            "red" => { if n > max_red { max_red = n; } }
+                            "green" => { if n > max_green { max_green = n; } }
+                            "blue" => { if n > max_blue { max_blue = n; } }
                             _ => { panic!("unmatched color: {color}") }
                         }
                     }
                 }
-                if !possible { break; }
             }
-            if !possible { break; }
         }
-        if possible { sum_possible += game_id; }
+        sum_powers += max_red * max_green * max_blue;
     }
-    println!("{sum_possible}");
+    println!("{sum_powers}");
 }

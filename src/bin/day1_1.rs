@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn solve() {
+fn main() {
     let file = "inputs/1.txt";
     let contents = fs::read_to_string(file).expect("Cannot read file:");
 
